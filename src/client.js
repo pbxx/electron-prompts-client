@@ -32,9 +32,9 @@ export default class ElectronPromptClient {
     }
     init = async () => {
         const elems = {
-            ebox: document.getElementById("elemBox"),
-            bbox: document.getElementById("buttonBox"),
-            titleText: document.querySelector(".titleBar span"),
+            ebox: document.getElementById("epc-elembox"),
+            bbox: document.getElementById("epc-buttonbox"),
+            titleText: document.getElementById("epc-titletext")
         }
         this.adoptedPrompt = await window.electronAPI.adopt()
         if (this.adoptedPrompt) {

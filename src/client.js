@@ -22,7 +22,7 @@ const lTables = {
 		]
 	}
 }
-export default class ElectronPromptClient {
+export default class ElectronPromptsClient {
 	adoptedPrompt = null
 	devMode = false
     formStateDefaults = {}
@@ -32,9 +32,9 @@ export default class ElectronPromptClient {
     }
     init = async () => {
         const elems = {
-            ebox: document.getElementById("epc-elembox"),
-            bbox: document.getElementById("epc-buttonbox"),
-            titleText: document.getElementById("epc-titletext")
+            ebox: document.querySelector(".epc-elembox") || document.getElementById("epc-elembox"),
+            bbox: document.querySelector(".epc-buttonbox") || document.getElementById("epc-buttonbox"),
+            titleText: document.querySelector(".epc-titletext") || document.getElementById("epc-titletext")
         }
         this.adoptedPrompt = await window.electronAPI.adopt()
         if (this.adoptedPrompt) {

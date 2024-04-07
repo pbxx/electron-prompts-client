@@ -1,6 +1,6 @@
-import ElectronPromptClient from "./client.js"
+import ElectronPromptsClient from "./client.js"
 
-const prompts = new ElectronPromptClient()
+const prompts = new ElectronPromptsClient()
 
 window.addEventListener('load', async () => {
     await prompts.init()

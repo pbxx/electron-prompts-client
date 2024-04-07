@@ -1,6 +1,6 @@
 {
   "name": "electron-prompts-client",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "The client (renderer) library for electron-prompts",
   "main": "src/client.js",
   "scripts": {

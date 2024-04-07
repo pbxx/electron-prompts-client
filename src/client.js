@@ -2,17 +2,20 @@
 
 const lTables = {
 	inputHTMLType: {
-		onChange: [
+		onChangeAndKeyup: [
 			"number",
-			"radio",
-			"checkbox",
-			"range",
-			"file",
 			"date",
 			"datetime-local",
 			"time",
 			"week",
 			"month",
+		],
+		onChange: [
+            "file",
+			"radio",
+			"checkbox",
+			"range",
+			"file",
 			"color",
 		],
 		restrictedAttributes: [
@@ -72,14 +75,23 @@ export default class ElectronPromptsClient {
                     }
                     case "input": {
                         var domElem = elems.ebox.appendChild(document.createElement("input"))
-                        var updateEvent = "keyup"
+                        var updateEvents = [
+                            "keyup"
+                        ]
                         this.formStateDefaults[elem.name] = elem.value === undefined ? "" : elem.value
                         console.log(elem)
                         if ("attributes" in elem) {
                             // assign custom attributes if specified
                             if ("type" in elem.attributes && lTables.inputHTMLType.onChange.includes(elem.attributes.type)) {
-                                // changes should be detected with onchange
-                                updateEvent = "change"
+                                // changes should only be detected with onchange
+                                updateEvents = [
+                                    "change"
+                                ]
+                                
+                            }
+                            if ("type" in elem.attributes && lTables.inputHTMLType.onChangeAndKeyup.includes(elem.attributes.type)) {
+                                // changes should be detected with both onchange and onkeyup
+                                updateEvents.push("change")
                                 
                             }
 
@@ -114,11 +126,14 @@ export default class ElectronPromptsClient {
                         // add <id> for data fetching
                         domElem.setAttribute("id", `form-${elem.name}`)
                         // setup update tracking
-                        if ("attributes" in elem && "type" in elem.attributes && elem.attributes.type == "file") {
-							domElem.addEventListener(elem.updateEvent || updateEvent, this.updateFormStateFile(elem.name))
-                        } else {
-							domElem.addEventListener(elem.updateEvent || updateEvent, this.updateFormState(elem.name))
-                        }
+                        updateEvents.forEach((updateEvent) => {
+                            if ("attributes" in elem && "type" in elem.attributes && elem.attributes.type == "file") {
+                                domElem.addEventListener(updateEvent, this.updateFormStateFile(elem.name))
+                            } else {
+                                domElem.addEventListener(updateEvent, this.updateFormState(elem.name))
+                            }
+                        })
+                        
                         
                         break
                     }
